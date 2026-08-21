@@ -1,0 +1,33 @@
+[ {
+  "username" : "youngguy",
+  "firstName" : "Johnny",
+  "lastName" : "Doe",
+  "emailAddress" : "jdoe@evolveum.com",
+  "organizationUnit" : [ "Software Development" ],
+  "birthDate" : "2007-09-05",
+  "registeredOn" : "2024-05-07"
+}, {
+  "username" : "bigboss",
+  "firstName" : "John",
+  "lastName" : "Green",
+  "emailAddress" : "jgreen@evolveum.com",
+  "organizationUnit" : [ "Software Development", "CEO" ],
+  "birthDate" : "1970-01-20",
+  "registeredOn" : "2010-01-01"
+}, {
+  "username" : "hrgal",
+  "firstName" : "Katie",
+  "lastName" : "Smith",
+  "emailAddress" : "ksmith@evolveum.com",
+  "organizationUnit" : [ "HR" ],
+  "birthDate" : "1990-08-26",
+  "registeredOn" : "2013-04-15"
+}, {
+  "username" : "guestguy",
+  "firstName" : "Yoshi",
+  "lastName" : "Mitsu",
+  "emailAddress" : "yoshimitsu@namco.com",
+  "organizationUnit" : [ ],
+  "birthDate" : "1994-12-09",
+  "registeredOn" : "2026-01-02"
+} ]

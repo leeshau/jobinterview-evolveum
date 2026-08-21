@@ -1,0 +1,6 @@
+{
+  "hrgal" : [ "internal-user", "mammoth" ],
+  "bigboss" : [ "internal-user" ],
+  "youngguy" : [ "underaged", "internal-user" ],
+  "guestguy" : [ "externaluser" ]
+}

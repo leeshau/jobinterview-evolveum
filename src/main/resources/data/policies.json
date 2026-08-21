@@ -1,0 +1,39 @@
+[ {
+  "id" : "underaged",
+  "name" : "Underaged User",
+  "conditions" : {
+    "birthDate" : {
+      "greaterThan" : "2007-01-01"
+    }
+  }
+}, {
+  "id" : "internal-user",
+  "name" : "Internal User",
+  "conditions" : {
+    "emailAddress" : {
+      "contains" : "@evolveum.com"
+    }
+  }
+}, {
+  "id" : "mammoth",
+  "name" : "Mammoth",
+  "conditions" : {
+    "emailAddress" : {
+      "contains" : "@evolveum.com"
+    },
+    "registeredOn" : {
+      "lessThan" : "2015-08-21"
+    },
+    "organizationUnit" : {
+      "notContains" : "CEO"
+    }
+  }
+}, {
+  "id" : "externaluser",
+  "name" : "External user",
+  "conditions" : {
+    "emailAddress" : {
+      "notContains" : "@evolveum.com"
+    }
+  }
+} ]
