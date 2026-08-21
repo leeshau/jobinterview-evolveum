@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import io.micrometer.common.util.StringUtils;
 import org.lesek.usermanagement.model.Policy;
 import org.lesek.usermanagement.model.User;
 import org.lesek.usermanagement.policy.condition.ConditionFactory;
@@ -117,7 +118,7 @@ public class PolicyDetailController implements NavigationAware, AppContextAware,
         this.originalPolicy = policy;
         populating = true;
         idField.setText(policy.id());
-        idField.setEditable(false);
+        idField.setDisable(true);
         nameField.setText(policy.name());
         clearConditionRows();
         policy.conditions().forEach((field, operators) -> {
@@ -143,7 +144,7 @@ public class PolicyDetailController implements NavigationAware, AppContextAware,
         this.originalPolicy = null;
         populating = true;
         idField.setText("");
-        idField.setEditable(true);
+        idField.setDisable(false);
         nameField.setText("");
         clearConditionRows();
         assignedUsersListView.getItems().clear();
@@ -217,11 +218,11 @@ public class PolicyDetailController implements NavigationAware, AppContextAware,
 
     @FXML
     private void onSaveAndClose() {
-        if (idField.getText() == null || idField.getText().isBlank()) {
+        if (StringUtils.isBlank(idField.getText())) {
             showValidationAlert("Id is required.");
             return;
         }
-        if (nameField.getText() == null || nameField.getText().isBlank()) {
+        if (StringUtils.isBlank(nameField.getText())) {
             showValidationAlert("Name is required.");
             return;
         }
@@ -231,6 +232,11 @@ public class PolicyDetailController implements NavigationAware, AppContextAware,
         }
         Map<String, Map<String, Object>> conditions = buildConditionsOrShowError();
         if (conditions == null) {
+            return;
+        }
+        // do always in the last place due to database check
+        if (originalPolicy == null && policyService.getPolicy(idField.getText()).isPresent()) {
+            showValidationAlert("A policy with this id already exists.");
             return;
         }
         Policy updatedPolicy = new Policy(idField.getText(), nameField.getText(), conditions);

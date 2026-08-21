@@ -1,5 +1,6 @@
 package org.lesek.usermanagement.ui.controller;
 
+import io.micrometer.common.util.StringUtils;
 import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -126,7 +127,7 @@ public class UserDetailController implements NavigationAware, AppContextAware, U
         this.originalUser = user;
         populating = true;
         usernameField.setText(user.username());
-        usernameField.setEditable(false);
+        usernameField.setDisable(true);
         firstNameField.setText(user.firstName());
         lastNameField.setText(user.lastName());
         emailField.setText(user.emailAddress());
@@ -151,7 +152,7 @@ public class UserDetailController implements NavigationAware, AppContextAware, U
         this.originalUser = null;
         populating = true;
         usernameField.setText("");
-        usernameField.setEditable(true);
+        usernameField.setDisable(false);
         firstNameField.setText("");
         lastNameField.setText("");
         emailField.setText("");
@@ -237,19 +238,19 @@ public class UserDetailController implements NavigationAware, AppContextAware, U
 
     @FXML
     private void onSaveAndClose() {
-        if (usernameField.getText() == null || usernameField.getText().isBlank()) {
+        if (StringUtils.isBlank(usernameField.getText())) {
             showValidationAlert("Id is required.");
             return;
         }
-        if (firstNameField.getText() == null || firstNameField.getText().isBlank()) {
+        if (StringUtils.isBlank(firstNameField.getText())) {
             showValidationAlert("First name is required.");
             return;
         }
-        if (lastNameField.getText() == null || lastNameField.getText().isBlank()) {
+        if (StringUtils.isBlank(lastNameField.getText())) {
             showValidationAlert("Last name is required.");
             return;
         }
-        if (emailField.getText() == null || emailField.getText().isBlank()) {
+        if (StringUtils.isBlank(emailField.getText())) {
             showValidationAlert("Email is required.");
             return;
         }
@@ -278,6 +279,11 @@ public class UserDetailController implements NavigationAware, AppContextAware, U
         }
         if (birthDate != null && registeredOn != null && registeredOn.isBefore(birthDate)) {
             showValidationAlert("Registered on cannot be older than birth date.");
+            return;
+        }
+        // do always in the last place due to database check
+        if (originalUser == null && userService.getUser(usernameField.getText()).isPresent()) {
+            showValidationAlert("A user with this id already exists.");
             return;
         }
         User updatedUser = buildUpdatedUser();
