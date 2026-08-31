@@ -34,7 +34,7 @@ public class ConditionFactory {
         registerField("registeredOn", FieldType.DATE, User::registeredOn);
     }
 
-    public void registerField(String fieldName, FieldType type, Function<User, Object> accessor) {
+    public final void registerField(String fieldName, FieldType type, Function<User, Object> accessor) {
         fields.put(fieldName, new UserField(type, accessor));
     }
 

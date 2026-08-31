@@ -2,6 +2,7 @@ package org.lesek.usermanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public record User(
         String emailAddress,
         List<String> organizationUnit,
         LocalDate birthDate,
-        LocalDate registeredOn) {
+        LocalDate registeredOn) implements Serializable {
 
     public User {
         organizationUnit = organizationUnit == null ? List.of() : List.copyOf(organizationUnit);

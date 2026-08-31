@@ -2,6 +2,7 @@ package org.lesek.usermanagement.model;
 
 import org.lesek.usermanagement.policy.condition.ICondition;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
  * e.g.: {@code conditions: {birthDate: {greaterThan: "2007-01-01"}}}.
  * They are turned into {@link ICondition} instances by a {@link org.lesek.usermanagement.policy.condition.ConditionFactory}.
  */
-public record Policy(String id, String name, Map<String, Map<String, Object>> conditions) {
+public record Policy(String id, String name, Map<String, Map<String, Object>> conditions) implements Serializable {
 
     public Policy {
         conditions = conditions == null ? Map.of() : Map.copyOf(conditions);

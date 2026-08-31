@@ -1,0 +1,58 @@
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:extend>
+    <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3 mb-0">Users</h1>
+            <a wicket:id="createUser" class="btn btn-primary">Create user</a>
+        </div>
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Organization unit(s)</th>
+                <th>Matching policies</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr wicket:id="userRow">
+                <td><span wicket:id="username">username</span></td>
+                <td><span wicket:id="fullName">full name</span></td>
+                <td><span wicket:id="emailAddress">email</span></td>
+                <td><span wicket:id="organizationUnit">org units</span></td>
+                <td>
+                    <span class="badge rounded-pill text-bg-light border pill" wicket:id="policyPill"><span wicket:id="policyId">policy</span></span>
+                </td>
+                <td>
+                    <a wicket:id="edit" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <button type="button" class="btn btn-sm btn-outline-danger" wicket:id="deleteTrigger" data-bs-toggle="modal">Delete</button>
+
+                    <div wicket:id="deleteModal" class="modal fade" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete user</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete user <strong wicket:id="modalUsername">username</strong>?
+                                    This cannot be undone.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a wicket:id="confirmDelete" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</wicket:extend>
+</body>
+</html>

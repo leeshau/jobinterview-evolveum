@@ -1,16 +1,30 @@
 # User & Policy Manager
 
-Desktop app (JavaFX + Spring Boot) that manages **users** and **policies**. A policy is a
-set of conditions on user fields (e.g. "born after 2007-01-01"). The app computes, for
-every user, which policies match them, and shows that in the UI.
+Web app (Apache Wicket + Spring Boot, served by an embedded Jetty) that manages
+**users** and **policies**. A policy is a set of conditions on user fields (e.g. "born
+after 2007-01-01"). The app computes, for every user, which policies match them, and
+shows that in the UI.
 
 ## Technical documentation
 
 ### Running
 
 ```
-mvn javafx:run
+mvn compile exec:java
 ```
+
+or build a runnable jar and start it directly:
+
+```
+mvn package
+java -jar target/evolveum-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+Either way the app listens on `http://localhost:8080` (override with
+`-Dserver.port=<port>`). The entry point is `JettyLauncher`: it starts a plain Spring
+Boot context (no embedded web server of its own) for the backend beans, then boots a
+hand-configured Jetty server hosting the Wicket application (`WicketApplication`) behind
+a single servlet filter mapped to `/*`.
 
 Data is loaded once at startup from JSON files under `src/main/resources/data/` and
 persisted back there on every change (no database).
@@ -106,24 +120,43 @@ the result is written to `policy-assignments.json`.
 
 A full recompute for every user also
 runs once at application startup, in case the JSON files were hand-edited while the app
-was closed. A small spinner is shown while a recompute runs.
+wasn't running.
 
 Because policy changes recompute everyone, deleting a policy automatically removes it
 from every user it used to apply to — there is nothing left to clean up manually.
 
+### Web UI structure
+
+The UI is a set of Apache Wicket pages under `org.lesek.usermanagement.ui`:
+
+| Package/class | Purpose |
+|---|---|
+| `ui/JettyLauncher` | composition root: starts the Spring context, then a hand-configured embedded Jetty server hosting Wicket |
+| `ui/WicketApplication` | mounts pages to clean URLs (`/users`, `/users/edit`, `/policies`, `/policies/edit`), registers webjars support |
+| `ui/pages/BasePage` | shared layout (navbar, Bootstrap/CSS wiring, per-screen background tint) every page extends |
+| `ui/pages/WelcomePage` | landing page |
+| `ui/pages/user/` | `UserListPage`, `UserDetailPage` (list/create/edit) |
+| `ui/pages/policy/` | `PolicyListPage`, `PolicyDetailPage` (list/create/edit) |
+| `ui/pages/ErrorHighlightBehavior` | adds a red `is-invalid` outline to whichever form field actually failed validation |
+
+Styling is [Bootstrap 5](https://getbootstrap.com/), pulled in as the `org.webjars:bootstrap`
+Maven dependency (served via the `wicket-webjars` library) rather than a CDN — the app
+renders correctly without outbound internet access. App-specific CSS lives in
+`ui/pages/app.css`.
+
 ### Known limitations
 
-- **Recompute runs synchronously**, blocking the UI (a spinner is shown to make this
-  visible). Fine at current data sizes; if users/policies grow large, move the recompute
-  to an async background service instead.
+- **Recompute runs synchronously**, blocking the request. Fine at current data sizes; if
+  users/policies grow large, move the recompute to an async background service instead.
 - **Storage is plain JSON files**, no transactions, no concurrent-access safety, no
   query capability. A more robust setup would move to a real database (e.g. via
-  Hibernate/JPA) once persistence needs to grow beyond a single-user desktop app.
+  Hibernate/JPA) once persistence needs to grow beyond this scale.
 - **`organization-units.json` has no GUI editor** — units are only added/removed by
   hand-editing that file. Could be extended with a management screen like the one for
   users and policies.
-- **Not mobile-friendly**: it's a fixed-size JavaFX desktop window with no responsive
-  layout, so it does not adapt to small/touch screens.
+- **Single embedded Jetty instance, no session clustering** — fine for one server, but
+  would need external session storage to run behind a load balancer with multiple
+  instances.
 - **Duplicate-id check on Save & close**: on create, the id is
   validated by calling `userService.getUser(id)` / `policyService.getPolicy(id)` on
   every save. At larger scale this should be backed by a cache of existing user/policy
@@ -133,23 +166,30 @@ from every user it used to apply to — there is nothing left to clean up manual
 
 ### Using the app
 
+The navbar (brand name and *Home*/*Users*/*Policies* links) is available on every
+screen; the user list is tinted a light cream and the policy list a light blue, so
+it's visually obvious which section you're in.
+
 **Home screen** → *View users* / *View policies*, each opens a list.
 
-**Lists**: click a row to open its detail/edit screen; each row also has its own
-*Delete* button (asks for confirmation first). *Create* opens a blank detail screen.
+**Lists**: click *Edit* on a row to open its detail/edit screen; each row also has its
+own *Delete* button, which opens a confirmation dialog before anything is actually
+deleted. *Create user*/*Create policy* opens a blank detail screen.
 
-**Detail/edit screens**: `Save & close` and `Cancel` only appear once you actually
-change something (or immediately, when creating something new — there is nothing saved
-yet to compare against). The back arrow (top-left) behaves like `Cancel` and, like it,
-asks for confirmation if you have unsaved changes.
+**Detail/edit screens**: `Save & close` is always available; `Cancel` discards any
+changes and returns to the list.
 
 **User detail** also lists the policies currently matching that user (click one to jump
-to it); 
+to it), or a note saying no policy currently matches if none do.
 
 **Policy detail** lists the users currently matching it (click one to jump to
-their detail). 
+their detail).
 Policy conditions are edited as rows (`+` adds one, `✕` removes one); a
-field already used in one row cannot be picked in another.
+field already used in one row cannot be picked in another. `birthDate`/`registeredOn`
+use the browser's native date picker.
+
+Any field that fails validation on save is outlined in red, in addition to the error
+message shown above the form.
 
 #### Validation on save
 

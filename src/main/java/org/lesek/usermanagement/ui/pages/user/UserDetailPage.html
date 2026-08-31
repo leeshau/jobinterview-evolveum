@@ -1,0 +1,62 @@
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:extend>
+    <div class="card p-4">
+        <h1 class="h3"><span wicket:id="heading">Create user</span></h1>
+        <ul wicket:id="feedback" class="list-unstyled"></ul>
+
+        <form wicket:id="form">
+            <div class="mb-3">
+                <label class="form-label" for="username">Username</label>
+                <input wicket:id="username" type="text" id="username" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="firstName">First name</label>
+                <input wicket:id="firstName" type="text" id="firstName" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="lastName">Last name</label>
+                <input wicket:id="lastName" type="text" id="lastName" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="emailAddress">Email address</label>
+                <input wicket:id="emailAddress" type="text" id="emailAddress" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Organization unit(s)</label>
+                <div wicket:id="organizationUnit">org units</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="birthDate">Birth date</label>
+                <input wicket:id="birthDate" type="text" id="birthDate" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="registeredOn">Registered on</label>
+                <input wicket:id="registeredOn" type="text" id="registeredOn" class="form-control"/>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <input type="submit" value="Save &amp; close" class="btn btn-primary"/>
+                <a wicket:id="cancel" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <div wicket:id="policiesSection" class="mt-4">
+            <h2 class="h5">Matching policies</h2>
+            <p class="text-muted" wicket:id="policiesHint">Policies currently applicable to this user.</p>
+            <span wicket:id="policyRow">
+                <a wicket:id="policyLink" class="badge rounded-pill text-bg-light border text-decoration-none pill">
+                    <span wicket:id="policyId">policy</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</wicket:extend>
+</body>
+</html>

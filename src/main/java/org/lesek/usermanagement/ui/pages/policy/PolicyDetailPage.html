@@ -1,0 +1,58 @@
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:extend>
+    <div class="card p-4">
+        <h1 class="h3"><span wicket:id="heading">Create policy</span></h1>
+        <ul wicket:id="feedback" class="list-unstyled"></ul>
+
+        <form wicket:id="form">
+            <div class="mb-3">
+                <label class="form-label" for="id">Id</label>
+                <input wicket:id="id" type="text" id="id" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input wicket:id="name" type="text" id="name" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Conditions</label>
+                <div wicket:id="rowsContainer">
+                    <div wicket:id="conditionRow" class="row g-2 align-items-center condition-row mb-2">
+                        <div class="col-12 col-sm">
+                            <select wicket:id="field" class="form-select"></select>
+                        </div>
+                        <div class="col-12 col-sm">
+                            <select wicket:id="operator" class="form-select"></select>
+                        </div>
+                        <div class="col-12 col-sm">
+                            <input wicket:id="value" type="text" class="form-control" placeholder="value"/>
+                        </div>
+                        <div class="col-12 col-sm-auto">
+                            <a wicket:id="removeRow" class="btn btn-sm btn-outline-danger">&#10005;</a>
+                        </div>
+                    </div>
+                </div>
+                <a wicket:id="addRow" class="btn btn-sm btn-outline-secondary mt-2">+ Add condition</a>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <input type="submit" value="Save &amp; close" class="btn btn-primary"/>
+                <a wicket:id="cancel" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <div wicket:id="usersSection" class="mt-4">
+            <h2 class="h5">Matching users</h2>
+            <p class="text-muted">Users currently matched by this policy.</p>
+            <span wicket:id="userRow">
+                <a wicket:id="userLink" class="badge rounded-pill text-bg-light border text-decoration-none pill">
+                    <span wicket:id="username">user</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</wicket:extend>
+</body>
+</html>

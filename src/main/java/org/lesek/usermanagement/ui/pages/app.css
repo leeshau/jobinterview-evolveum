@@ -1,0 +1,13 @@
+body { background: #f4f5f7; }
+body.screen-user { background-color: #faf6f1 !important; }
+body.screen-policy { background-color: #f2f6fb !important; }
+.navbar-brand { font-weight: 700; letter-spacing: -0.01em; }
+.card { border: none; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 8px 20px -8px rgba(16,24,40,0.12); border-radius: 0.75rem; }
+table.table thead th { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.04em; color: #6b7280; }
+.pill { display: inline-block; margin: 0 0.2rem 0.2rem 0; }
+.form-check { display: block; padding-left: 1.75em; margin-bottom: 0.35rem; }
+.form-check input[type=checkbox] { float: left; margin-left: -1.75em; margin-top: 0.2em; }
+.form-check label { cursor: pointer; }
+.feedbackPanelERROR, .feedbackPanelFATAL { display: block; padding: 0.6rem 1rem; margin-bottom: 0.5rem; border-radius: 0.5rem; background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+.feedbackPanelWARNING { display: block; padding: 0.6rem 1rem; margin-bottom: 0.5rem; border-radius: 0.5rem; background: #fff3cd; color: #664d03; border: 1px solid #ffecb5; }
+.feedbackPanelINFO, .feedbackPanelSUCCESS { display: block; padding: 0.6rem 1rem; margin-bottom: 0.5rem; border-radius: 0.5rem; background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
